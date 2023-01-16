@@ -1,10 +1,9 @@
 from flask import flash, redirect, render_template
 
-from yacut.utils import get_unique_short_id
-
 from . import app, db
 from .forms import YacutForm
 from .models import URLMap
+from yacut.utils import get_unique_short_id
 
 
 @app.route("/", methods=["GET", "POST"])

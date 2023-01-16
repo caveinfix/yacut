@@ -1,20 +1,20 @@
 import re
+from http import HTTPStatus
 
 from flask import jsonify, request
-
-from yacut.utils import get_unique_short_id
 
 from . import app, db
 from .error_handlers import InvalidAPIUsage
 from .models import URLMap
+from yacut.utils import get_unique_short_id
 
 
 @app.route("/api/id/<string:short_url>/", methods=["GET"])
 def get_url(short_url):
     short_url = URLMap.query.filter_by(short=short_url).first()
     if short_url is None:
-        raise InvalidAPIUsage("Указанный id не найден", 404)
-    return jsonify(url=short_url.original), 200
+        raise InvalidAPIUsage("Указанный id не найден", HTTPStatus.NOT_FOUND)
+    return jsonify(url=short_url.original), HTTPStatus.OK
 
 
 @app.route("/api/id/", methods=["POST"])
@@ -35,4 +35,4 @@ def add_url():
     add_url.from_dict(data)
     db.session.add(add_url)
     db.session.commit()
-    return jsonify(add_url.to_dict()), 201
+    return jsonify(add_url.to_dict()), HTTPStatus.CREATED
