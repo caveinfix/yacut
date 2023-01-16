@@ -7,7 +7,7 @@ from . import app, db
 
 class InvalidAPIUsage(Exception):
     status_code = HTTPStatus.BAD_REQUEST
-    
+
     def __init__(self, message, status_code=None):
         super().__init__()
         self.message = message
